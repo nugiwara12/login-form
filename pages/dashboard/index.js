@@ -1,5 +1,8 @@
+// src/components/Dashboard.js
+
 import React, { useState, useEffect } from "react";
-import { auth, signOut } from "../../firebase/firebase";
+import { auth } from "../../firebase/firebase";
+import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 
 const Dashboard = () => {
