@@ -25,10 +25,10 @@ const getUsers = async (req, res) => {
 
 const saveUser = async (req, res) => {
   try {
-    const { username, email, password, description, role } = req.body;
+    const { username, email, password, role } = req.body;
 
     // Validate input
-    if (!username || !email || !password || !description || !role) {
+    if (!username || !email || !password || !role) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
@@ -59,14 +59,13 @@ const saveUser = async (req, res) => {
         username,
         email,
         password: hashedPassword,
-        description,
         role,
       },
       select: {
         id: true,
         username: true,
         email: true,
-        description: true,
+        password: true,
         role: true,
       },
     });
