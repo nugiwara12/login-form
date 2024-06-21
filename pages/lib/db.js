@@ -1,14 +1,20 @@
-import { PrismaClient } from "@prisma/client";
+import mysql from "mysql2/promise";
 
-// Create a global variable to store the PrismaClient instance
-const globalForPrisma = globalThis;
+export async function query({ query, values = [] }) {
+  const dbconnection = await mysql.createConnection({
+    host: process.env.MYSQL_HOST,
+    post: process.env.MYSQL_PORT,
+    database: process.env.MYSQL_DATABASE,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+  });
 
-// Initialize the PrismaClient
-const prisma = globalForPrisma.prisma || new PrismaClient();
-
-// Set the global variable to the PrismaClient instance in development mode
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+  try {
+    const [results] = await dbconnection.execute(query, values);
+    dbconnection.end();
+    return results;
+  } catch (error) {
+    throw Error(error.message);
+    return { error };
+  }
 }
-
-export const db = prisma;
