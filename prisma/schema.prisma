@@ -17,3 +17,10 @@ model users {
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 }
+
+model Menu {
+  id    Int      @id @default(autoincrement())
+  name  String
+  price String
+  image String?
+}
