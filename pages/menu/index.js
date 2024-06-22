@@ -2,6 +2,9 @@
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { BiLoaderAlt } from "react-icons/bi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Menu = () => {
   const [imageFile, setImageFile] = useState(null);
@@ -13,16 +16,15 @@ const Menu = () => {
     formState: { errors },
   } = useForm();
 
-  async function onSubmit(data) {
-    // console.log(data);
-    const raw_image = data.image[0];
-    console.log(raw_image);
+  const [loading, setLoading] = useState(false);
 
+  async function onSubmit(data) {
+    const raw_image = data.image[0];
     const formData = new FormData();
+    setLoading(true);
     formData.append("file", raw_image);
     formData.append("upload_preset", "menuPreset");
 
-    //Upload image to cloudenary
     try {
       const uploadResponse = await fetch(
         "https://api.cloudinary.com/v1_1/dv7ojcako/image/upload",
@@ -35,14 +37,19 @@ const Menu = () => {
         throw new Error("Image Upload Failed");
       }
       const imageData = await uploadResponse.json();
-      console.log(imageData);
+      const imageUrl = imageData.secure_url;
+
+      const contactData = { ...data, image: imageUrl };
+      reset();
+      setLoading(false);
+      toast.success("Data saved successfully!");
+
+      console.log(contactData);
     } catch (error) {
       console.log(error);
+      setLoading(false);
+      toast.error("Image upload failed.");
     }
-
-    // create a upload preset name:
-    // name: menuPreset
-    // cloudname: dv7ojcako
   }
 
   const handleImageUpload = (event) => {
@@ -52,6 +59,7 @@ const Menu = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="max-w-md mx-auto">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -139,12 +147,23 @@ const Menu = () => {
             )}
           </div>
           <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Submit
-            </button>
+            {loading ? (
+              <button
+                disabled
+                type="button"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+              >
+                <BiLoaderAlt className="animate-spin w-4 h-4 mr-2" />
+                Create data please wait...
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+              >
+                <span className="mr-2">Submit</span>
+              </button>
+            )}
           </div>
         </form>
       </div>
