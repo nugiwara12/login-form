@@ -39,16 +39,30 @@ const Menu = () => {
       const imageData = await uploadResponse.json();
       const imageUrl = imageData.secure_url;
 
-      const contactData = { ...data, image: imageUrl };
-      reset();
-      setLoading(false);
-      toast.success("Data saved successfully!");
+      const menuData = { ...data, image: imageUrl };
 
-      console.log(contactData);
+      //send the data to the API
+
+      const response = await fetch("http://localhost:3000/api/menu", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(menuData),
+      });
+
+      if (response.ok) {
+        reset();
+        setLoading(false);
+        toast.success("Data saved successfully!", {
+          autoClose: 2000,
+        });
+        console.log(menuData);
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error:", error);
       setLoading(false);
-      toast.error("Image upload failed.");
+      toast.error("Failed to save data.");
     }
   }
 
@@ -85,26 +99,7 @@ const Menu = () => {
               </p>
             )}
           </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <input
-              {...register("email", { required: true })}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-            />
-            {errors.email && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                Email is Required
-              </p>
-            )}
-          </div>
+
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
