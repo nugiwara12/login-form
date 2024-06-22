@@ -20,7 +20,7 @@ const Menu = () => {
 
     const formData = new FormData();
     formData.append("file", raw_image);
-    formData.append("upload_present", "menuPresent");
+    formData.append("upload_preset", "menuPreset");
 
     //Upload image to cloudenary
     try {
