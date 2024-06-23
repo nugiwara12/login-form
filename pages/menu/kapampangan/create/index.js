@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ModalMenu from "../../../../components/Modal/ModalMenu";
-import Navbar from "../../../../components/Navbar/Navbar";
 
 const CreateMenu = () => {
   const [showModal, setShowModal] = useState(false);
@@ -10,6 +9,7 @@ const CreateMenu = () => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
+    description: "",
     image: null,
   });
 
@@ -34,14 +34,16 @@ const CreateMenu = () => {
   };
 
   const onSubmit = async () => {
-    const { name, price, image } = formData;
-    const formDataToSend = new FormData();
-    formDataToSend.append("file", image);
-    formDataToSend.append("upload_preset", "menuPreset");
+    const { name, price, description, image } = formData;
 
     setLoading(true);
 
     try {
+      // Upload image to Cloudinary
+      const formDataToSend = new FormData();
+      formDataToSend.append("file", image);
+      formDataToSend.append("upload_preset", "menuPreset");
+
       const uploadResponse = await fetch(
         "https://api.cloudinary.com/v1_1/dv7ojcako/image/upload",
         {
@@ -57,9 +59,11 @@ const CreateMenu = () => {
       const imageData = await uploadResponse.json();
       const imageUrl = imageData.secure_url;
 
+      // Send menu data to your API
       const menuData = {
         name,
         price,
+        description,
         image: imageUrl,
       };
 
@@ -93,7 +97,7 @@ const CreateMenu = () => {
       <div className="max-w-md mx-auto">
         <button
           onClick={toggleModal}
-          className="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 inline-flex items-center"
+          className="text-white bg-yellow-700 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800 inline-flex items-center"
         >
           Create Menu
         </button>
@@ -104,7 +108,7 @@ const CreateMenu = () => {
           onImageUpload={handleImageUpload}
           onChange={handleInputChange}
           formData={formData}
-          isLoading={loading}
+          isLoading={loading} // Pass isLoading state to ModalMenu
         />
       </div>
     </>
