@@ -1,47 +1,67 @@
-"use client";
-
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { BiLoaderAlt } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import ModalMenu from "../../components/Modal/ModalMenu";
 
 const Menu = () => {
-  const [imageFile, setImageFile] = useState(null);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
+  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    image: null,
+  });
 
-  async function onSubmit(data) {
-    const raw_image = data.image[0];
-    const formData = new FormData();
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    setFormData({
+      ...formData,
+      image: file,
+    });
+  };
+
+  const onSubmit = async () => {
+    const { name, price, image } = formData;
+    const formDataToSend = new FormData();
+    formDataToSend.append("file", image);
+    formDataToSend.append("upload_preset", "menuPreset");
+
     setLoading(true);
-    formData.append("file", raw_image);
-    formData.append("upload_preset", "menuPreset");
 
     try {
       const uploadResponse = await fetch(
         "https://api.cloudinary.com/v1_1/dv7ojcako/image/upload",
         {
           method: "POST",
-          body: formData,
+          body: formDataToSend,
         }
       );
+
       if (!uploadResponse.ok) {
         throw new Error("Image Upload Failed");
       }
+
       const imageData = await uploadResponse.json();
       const imageUrl = imageData.secure_url;
 
-      const menuData = { ...data, image: imageUrl };
-
-      //send the data to the API
+      const menuData = {
+        name,
+        price,
+        image: imageUrl,
+      };
 
       const response = await fetch("http://localhost:3000/api/menu", {
         method: "POST",
@@ -52,115 +72,41 @@ const Menu = () => {
       });
 
       if (response.ok) {
-        reset();
         setLoading(false);
         toast.success("Data saved successfully!", {
           autoClose: 2000,
         });
-        console.log(menuData);
+        toggleModal(); // Close modal on successful submission
+      } else {
+        throw new Error("Failed to save data.");
       }
     } catch (error) {
       console.error("Error:", error);
       setLoading(false);
       toast.error("Failed to save data.");
     }
-  }
-
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    setImageFile(file);
   };
 
   return (
     <>
+      <Sidebar />
       <ToastContainer />
       <div className="max-w-md mx-auto">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        <button
+          onClick={toggleModal}
+          className="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-4 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 inline-flex items-center"
         >
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="name"
-            >
-              Name
-            </label>
-            <input
-              {...register("name", { required: true })}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="name"
-              type="text"
-              placeholder="Enter your name"
-            />
-            {errors.name && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                Name is Required
-              </p>
-            )}
-          </div>
-
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="price"
-            >
-              Price
-            </label>
-            <input
-              {...register("price", { required: true })}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="price"
-              type="number"
-              placeholder="Enter the price"
-            />
-            {errors.price && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                Price is Required
-              </p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="image"
-            >
-              Upload Image
-            </label>
-            <input
-              {...register("image", { required: true })}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="image"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-            />
-            {errors.image && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                Image is Required
-              </p>
-            )}
-          </div>
-          <div className="flex items-center justify-between">
-            {loading ? (
-              <button
-                disabled
-                type="button"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
-              >
-                <BiLoaderAlt className="animate-spin w-4 h-4 mr-2" />
-                Create data please wait...
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
-              >
-                <span className="mr-2">Submit</span>
-              </button>
-            )}
-          </div>
-        </form>
+          Create Menu
+        </button>
+        <ModalMenu
+          isOpen={showModal}
+          onClose={toggleModal}
+          onSubmitForm={onSubmit}
+          onImageUpload={handleImageUpload}
+          onChange={handleInputChange}
+          formData={formData}
+          isLoading={loading}
+        />
       </div>
     </>
   );
