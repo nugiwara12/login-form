@@ -5,13 +5,12 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const { name, price: priceString, image } = req.body;
-      const price = parseFloat(priceString); // Parse price as Float
+      const { name, price, image } = req.body; // No need to parse price as float
 
       const newMenu = await prisma.menu.create({
         data: {
           name,
-          price,
+          price: price.toString(), // Ensure price is stored as string
           image,
         },
       });
@@ -27,14 +26,13 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "PUT") {
     try {
-      const { id, name, price: priceString, image } = req.body;
-      const price = parseFloat(priceString); // Parse price as Float
+      const { id, name, price, image } = req.body; // No need to parse price as float
 
       const updatedMenu = await prisma.menu.update({
         where: { id: Number(id) },
         data: {
           name,
-          price,
+          price: price.toString(), // Ensure price is stored as string
           image,
         },
       });
