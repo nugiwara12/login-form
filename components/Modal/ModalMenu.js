@@ -45,7 +45,6 @@ const ModalMenu = ({
                   name="name"
                   value={formData.name}
                   onChange={onChange}
-                  required
                   className="mt-1 block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
                 />
                 {errors.name && (
@@ -65,12 +64,28 @@ const ModalMenu = ({
                   name="price"
                   value={formData.price}
                   onChange={onChange}
-                  required
                   className="mt-1 block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
                 />
                 {errors.price && (
                   <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                     Price is Required
+                  </p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <textarea
+                  {...register("description", { required: true })}
+                  name="description"
+                  value={formData.description}
+                  onChange={onChange}
+                  className="mt-1 block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
+                />
+                {errors.description && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                    Description is required
                   </p>
                 )}
               </div>
@@ -83,7 +98,6 @@ const ModalMenu = ({
                   type="file"
                   name="image"
                   onChange={onImageUpload}
-                  required
                   accept="image/*"
                   className="mt-1 block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
                 />
@@ -98,7 +112,7 @@ const ModalMenu = ({
                   <button
                     disabled
                     type="button"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+                    className="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-blue-800 inline-flex items-center"
                   >
                     <BiLoaderAlt className="animate-spin w-4 h-4 mr-2" />
                     Create data please wait...
@@ -106,7 +120,7 @@ const ModalMenu = ({
                 ) : (
                   <button
                     type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+                    className="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800 inline-flex items-center"
                   >
                     <span className="mr-2">Submit</span>
                   </button>
