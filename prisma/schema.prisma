@@ -19,8 +19,9 @@ model users {
 }
 
 model Menu {
-  id    Int      @id @default(autoincrement())
-  name  String
-  price String
-  image String?
+  id        Int      @id @default(autoincrement())
+  name      String
+  price     String
+  image     String
+  description String @db.VarChar(4000)
 }
