@@ -1,3 +1,5 @@
+// handler.js
+
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -5,13 +7,14 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const { name, price, image } = req.body; // No need to parse price as float
+      const { name, price, image, description } = req.body;
 
       const newMenu = await prisma.menu.create({
         data: {
           name,
-          price: price.toString(), // Ensure price is stored as string
+          price: price.toString(),
           image,
+          description, // This should work now that description is nullable
         },
       });
 
@@ -26,14 +29,15 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "PUT") {
     try {
-      const { id, name, price, image } = req.body; // No need to parse price as float
+      const { id, name, price, image, description } = req.body;
 
       const updatedMenu = await prisma.menu.update({
         where: { id: Number(id) },
         data: {
           name,
-          price: price.toString(), // Ensure price is stored as string
+          price: price.toString(),
           image,
+          description,
         },
       });
 
@@ -75,8 +79,22 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "GET") {
     try {
-      const menuItems = await prisma.menu.findMany();
-      return res.status(200).json(menuItems);
+      const { id } = req.query;
+
+      if (id) {
+        const menuItem = await prisma.menu.findUnique({
+          where: { id: Number(id) },
+        });
+
+        if (!menuItem) {
+          return res.status(404).json({ message: "Menu item not found" });
+        }
+
+        return res.status(200).json(menuItem);
+      } else {
+        const menuItems = await prisma.menu.findMany();
+        return res.status(200).json(menuItems);
+      }
     } catch (error) {
       console.error("Error while fetching menu", error);
       return res
