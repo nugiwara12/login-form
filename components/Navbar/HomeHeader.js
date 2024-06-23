@@ -83,7 +83,7 @@ const HomeHeader = () => {
         >
           <div className="flex items-center font-normal">
             <a
-              href="/"
+              href="/dashboard"
               className="text-base font-semibold px-4 cursor-pointer hover:font-bold hover:text-yellow-700 text-white transition-colors duration-300"
             >
               Dashboard
