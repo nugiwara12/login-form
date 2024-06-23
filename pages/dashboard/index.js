@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase/firebase";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import HomeHeader from "../../components/Navbar/HomeHeader";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -33,7 +33,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Sidebar />
+      <HomeHeader />
       <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
