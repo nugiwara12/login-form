@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hr-white {
+  border: none;
+  border-top: 2.5px solid white;
+  margin: 1rem 0;
+}
