@@ -60,10 +60,17 @@ const ModalMenu = ({
                 </label>
                 <input
                   {...register("price", { required: true })}
-                  type="text"
+                  type="number"
                   name="price"
                   value={formData.price}
                   onChange={onChange}
+                  onKeyPress={(e) => {
+                    // Allow only digits (0-9) and some control keys like backspace, delete, etc.
+                    const pattern = /[0-9]/;
+                    if (!pattern.test(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
                   className="mt-1 block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
                 />
                 {errors.price && (
@@ -89,6 +96,36 @@ const ModalMenu = ({
                   </p>
                 )}
               </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Rating{" "}
+                  <span className="text-gray-400 italic">
+                    (Rate 1 to 5 of the Food)
+                  </span>
+                </label>
+                <input
+                  {...register("rating", { required: true })}
+                  type="number"
+                  name="rating"
+                  value={formData.rating}
+                  onChange={onChange}
+                  min="1"
+                  max="5"
+                  onKeyPress={(e) => {
+                    const pattern = /[1-5]/;
+                    if (!pattern.test(e.key) && e.key !== "Backspace") {
+                      e.preventDefault();
+                    }
+                  }}
+                  className="mt-1 block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
+                />
+                {errors.rating && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                    Rating is Required
+                  </p>
+                )}
+              </div>
+
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">
                   Image
