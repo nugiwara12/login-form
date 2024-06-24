@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import HomeHeader from "../../../components/Navbar/HomeHeader";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { FaStar } from "react-icons/fa";
 
 const MenuItemDetail = () => {
   const router = useRouter();
@@ -37,6 +38,13 @@ const MenuItemDetail = () => {
   if (!menuItem) {
     return <div>Menu item not found</div>;
   }
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 0; i < rating; i++) {
+      stars.push(<FaStar key={i} className="h-6 w-6 text-yellow-500" />);
+    }
+    return stars;
+  };
 
   return (
     <>
@@ -67,6 +75,9 @@ const MenuItemDetail = () => {
                 <h3 className="text-lg sm:text-2xl font-semibold text-gray-400">
                   FoodHub
                 </h3>
+              </div>
+              <div className="flex justify-start items-center">
+                {renderStars(menuItem.rating)}
               </div>
               <div className="flex flex-col justify-center items-center sm:items-start mt-6">
                 <p className="text-gray-700 text-lg mb-2">

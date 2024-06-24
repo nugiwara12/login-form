@@ -4,6 +4,7 @@ import HomeHeader from "../../../components/Navbar/HomeHeader";
 import CreateMenu from "./create/index";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Footer from "../../../components/Footer/Footer";
+import { FaStar } from "react-icons/fa";
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -60,6 +61,14 @@ const Menu = () => {
     return <div>Loading...</div>;
   }
 
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 0; i < rating; i++) {
+      stars.push(<FaStar key={i} className="h-6 w-6 text-yellow-500" />);
+    }
+    return stars;
+  };
+
   return (
     <>
       <div
@@ -68,9 +77,50 @@ const Menu = () => {
       >
         <HomeHeader />
         <div className="container mt-6">
-          <div className="flex items-center justify-between">
-            {/* Pagination controls */}
-            <div className="flex justify-center mt-4 mb-2">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <h2 className="text-white text-2xl font-semibold text-center md:text-left mt-4 md:mt-0">
+              Menu List
+            </h2>
+            <div className="flex justify-end items-end mt-4 md:mt-0">
+              <CreateMenu />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            {paginatedItems.map((item) => (
+              <Link key={item.id} href={`/menu/kapampangan/${item.id}`}>
+                <div className="cursor-pointer">
+                  <div className="bg-[#212121] text-white text-center shadow-md rounded-lg p-4">
+                    <div className="relative pb-[56.25%] h-0 overflow-hidden rounded-md mb-4">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <h1 className="text-xl font-semibold flex items-center">
+                        {item.name}
+                      </h1>
+                      <div className="flex justify-start items-center">
+                        {renderStars(item.rating)}
+                      </div>
+                    </div>
+                    <p className="text-start font-sembold mt-2">
+                      ₱
+                      {typeof item.price === "number"
+                        ? item.price.toFixed(2)
+                        : parseFloat(item.price).toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* Pagination controls */}
+        <div className="flex flex-col items-center md:flex-row md:justify-between">
+          <div className="flex flex-col items-center md:items-end md:w-full mt-4 mb-2 mr-4 md:mb-0">
+            <div className="bg-[#212121] flex justify-center md:justify-end mt-4 mb-2 md:mt-0 p-3 rounded-lg">
               <button
                 onClick={prevPage}
                 disabled={currentPage === 1}
@@ -101,48 +151,15 @@ const Menu = () => {
                   (currentPage - 1) * itemsPerPage + 1,
                   menuItems.length
                 )}{" "}
-                -{Math.min(currentPage * itemsPerPage, menuItems.length)} of{" "}
+                - {Math.min(currentPage * itemsPerPage, menuItems.length)} of{" "}
                 {menuItems.length} items
               </span>
             </div>
-            {/* End of Pagination controls */}
-            <h2 className="text-white text-2xl font-semibold">Menu List</h2>
-            <div className="flex justify-end items-end">
-              <CreateMenu />
-            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginatedItems.map((item) => (
-              <Link key={item.id} href={`/menu/kapampangan/${item.id}`}>
-                <div className="cursor-pointer">
-                  <div className="bg-[#212121] text-white text-center shadow-md rounded-lg p-4">
-                    <div className="w-full">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover rounded-md mb-4"
-                      />
-                    </div>
-                    <div className="flex items-center justify-between sm:px-0">
-                      <h1 className="text-xl font-semibold flex items-center">
-                        {item.name}
-                      </h1>
-                      <h3 className="text-lg font-semibold text-gray-400">
-                        FoodHub
-                      </h3>
-                    </div>
-                    <p className="font-sembold">
-                      ₱
-                      {typeof item.price === "number"
-                        ? item.price.toFixed(2)
-                        : parseFloat(item.price).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {/* Other elements can be added here */}
         </div>
+
+        {/* End of Pagination controls */}
         {/* Footer Section */}
         <hr />
         <Footer />
