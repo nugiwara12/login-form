@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { IoLogoLinkedin } from "react-icons/io5";
 import { FaInstagramSquare, FaGlobe } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Footer = () => {
   const [formData, setFormData] = useState({
@@ -20,17 +18,6 @@ const Footer = () => {
   const handleSubscribe = (e) => {
     e.preventDefault();
 
-    // Trigger the success toast
-    toast.success("🎉 Subscribed successfully!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
     // Reset the form fields
     setFormData({
       email: "",
@@ -38,7 +25,6 @@ const Footer = () => {
   };
   return (
     <>
-      <ToastContainer />
       <footer className="w-full py-6 md:py-10 px-4 md:px-8 lg:px-20">
         <hr className="hr-white" />
         <div className="py-4">
@@ -52,17 +38,19 @@ const Footer = () => {
           <div className="flex justify-center items-center w-full mx-auto">
             <div className="flex flex-col items-center md:flex-row">
               <Image
+                src="/footer/googleplay.png"
                 height={100}
                 width={200}
-                src="/footer/googleplay.png"
                 alt="Google Play"
                 className="mb-2 md:mb-0 mr-0 md:mr-2"
+                style={{ width: "auto", height: "auto" }}
               />
               <Image
+                src="/footer/appstore.png"
                 height={100}
                 width={200}
-                src="/footer/appstore.png"
                 alt="App Store"
+                style={{ width: "auto", height: "auto" }}
               />
             </div>
           </div>
