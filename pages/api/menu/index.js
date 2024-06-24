@@ -1,5 +1,3 @@
-// handler.js
-
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -7,14 +5,19 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const { name, price, image, description } = req.body;
+      const { name, price, image, description, rating } = req.body;
+
+      // Convert price to a string
+      const parsedPrice = String(price);
+      const parsedRating = String(rating);
 
       const newMenu = await prisma.menu.create({
         data: {
           name,
-          price: price.toString(),
+          price: parsedPrice,
           image,
-          description, // This should work now that description is nullable
+          description,
+          rating: parsedRating,
         },
       });
 
@@ -29,15 +32,20 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "PUT") {
     try {
-      const { id, name, price, image, description } = req.body;
+      const { id, name, price, image, description, rating } = req.body;
+
+      // Convert price to a string
+      const parsedPrice = String(price);
+      const parsedRating = String(rating);
 
       const updatedMenu = await prisma.menu.update({
         where: { id: Number(id) },
         data: {
           name,
-          price: price.toString(),
+          price: parsedPrice,
           image,
           description,
+          rating: parsedRating,
         },
       });
 
