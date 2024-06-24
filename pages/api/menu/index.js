@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     try {
       const { name, price, image, description, rating } = req.body;
 
-      // Convert price to a string
+      // Convert price and rating to strings
       const parsedPrice = String(price);
       const parsedRating = String(rating);
 
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     try {
       const { id, name, price, image, description, rating } = req.body;
 
-      // Convert price to a string
+      // Convert price and rating to strings
       const parsedPrice = String(price);
       const parsedRating = String(rating);
 
