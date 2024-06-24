@@ -25,9 +25,6 @@ const HomeHeader = () => {
   };
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
     const handleResize = () => {
       if (window.innerWidth > 768) {
         setIsMobileMenuOpen(false);
@@ -44,26 +41,8 @@ const HomeHeader = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setIsMobileMenuOpen(false);
-        setIsServiceMenuOpen(false);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   return (
-    <nav className="flex justify-center item-center bg-black w-full h-28">
+    <nav className="flex justify-center items-center bg-black w-full h-28">
       <div className="container mx-auto flex justify-between items-center px-4 lg:px-4">
         <div className="text-white text-3xl font-bold">
           <a href="/">
@@ -72,7 +51,6 @@ const HomeHeader = () => {
               height={100}
               src="/logo/foodhub.png"
               alt="logo"
-              loading="lazy"
               className="h-auto max-w-xs md:max-w-sm lg:max-w-md"
               style={{ width: "auto", height: "auto" }}
             />
@@ -80,10 +58,10 @@ const HomeHeader = () => {
         </div>
         <div
           className={`lg:flex flex-grow items-center justify-center ${
-            isMobileMenuOpen ? "" : "hidden"
-          }`}
+            isMobileMenuOpen ? "flex" : "hidden"
+          } lg:flex`}
         >
-          <div className="flex items-center font-normal">
+          <div className="flex flex-col lg:flex-row items-center font-normal">
             <a
               href="/dashboard"
               className="text-base font-semibold px-4 cursor-pointer hover:font-bold hover:text-yellow-700 text-white transition-colors duration-300"
@@ -150,7 +128,7 @@ const HomeHeader = () => {
             </a>
           </div>
         </div>
-        <div className="lg:flex justify-end text-end hidden">
+        <div className="hidden lg:flex justify-end text-end">
           <a
             href="/Home/Contact"
             className="text-sm text-white font-normal px-6 py-2 rounded bg-yellow-600 hover:bg-yellow-700 cursor-pointer transition-colors duration-300"
@@ -158,11 +136,7 @@ const HomeHeader = () => {
             Contact Us
           </a>
         </div>
-        <div
-          className={`flex lg:hidden items-center ${
-            isMobileMenuOpen ? "hidden" : ""
-          }`}
-        >
+        <div className="flex lg:hidden items-center">
           <button
             className="text-yellow-600 px-4 py-2"
             onClick={toggleMobileMenu}
