@@ -8,6 +8,7 @@ datasource db {
   relationMode = "prisma"
 }
 
+
 model users {
   id          Int      @id @default(autoincrement())
   username    String   @unique @db.VarChar(250)
@@ -21,7 +22,9 @@ model users {
 model Menu {
   id        Int      @id @default(autoincrement())
   name      String
-  price     String
-  image     String
-  description String @db.VarChar(4000)
+  price     String    // Adjust type based on your database schema
+  description String @db.VarChar(3000)
+  image     String   // Adjust type based on your database schema
+  rating    String     // Optional if rating is nullable
+  createdAt DateTime @default(now())
 }
