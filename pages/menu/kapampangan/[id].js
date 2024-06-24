@@ -63,7 +63,7 @@ const MenuItemDetail = () => {
               />
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-4 mt-4">
+            <div className="bg-gray-100 shadow-lg rounded-lg p-4 mt-4">
               <div className="flex items-center justify-between sm:px-0">
                 <h1 className="text-2xl sm:text-3xl font-bold flex items-center">
                   <IoIosArrowRoundBack
@@ -72,21 +72,19 @@ const MenuItemDetail = () => {
                   />
                   <span className="sm:inline-block">{menuItem.name}</span>
                 </h1>
-                <h3 className="text-lg sm:text-2xl font-semibold text-gray-400">
-                  FoodHub
-                </h3>
+                <div className="flex justify-start items-center">
+                  {renderStars(menuItem.rating)}
+                </div>
               </div>
-              <div className="flex justify-start items-center">
-                {renderStars(menuItem.rating)}
-              </div>
+
               <div className="flex flex-col justify-center items-center sm:items-start mt-6">
                 <p className="text-gray-700 text-lg mb-2">
-                  ₱
+                  <span className="text-black">₱</span>
                   {typeof menuItem.price === "number"
                     ? menuItem.price.toFixed(2)
                     : parseFloat(menuItem.price).toFixed(2)}
                 </p>
-                <div className="prose prose-sm text-gray-700 mb-4">
+                <div className="prose prose-sm text-black mb-4">
                   <p className="text-sm whitespace-pre-wrap">
                     {menuItem.description}
                   </p>
