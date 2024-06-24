@@ -72,7 +72,9 @@ const HomeHeader = () => {
               height={100}
               src="/logo/foodhub.png"
               alt="logo"
+              loading="lazy"
               className="h-auto max-w-xs md:max-w-sm lg:max-w-md"
+              style={{ width: "auto", height: "auto" }}
             />
           </a>
         </div>
