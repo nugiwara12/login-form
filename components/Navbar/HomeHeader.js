@@ -217,13 +217,13 @@ const HomeHeader = () => {
                       Kapampangan
                     </a>
                     <a
-                      href="/Home/Menu/Tagalog"
+                      href="/menu/tagalog"
                       className="block px-4 py-2 text-sm text-black font-semibold hover:bg-yellow-600 hover:text-gray-200"
                     >
                       Tagalog
                     </a>
                     <a
-                      href="/Home/Menu/Ilocano"
+                      href="/menu/ilocano"
                       className="block px-4 py-2 text-sm text-black font-semibold hover:bg-yellow-600 hover:text-gray-200"
                     >
                       Ilocano
