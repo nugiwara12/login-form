@@ -100,19 +100,19 @@ const HomeHeader = () => {
                     Kapampangan
                   </a>
                   <a
-                    href="/Home/Menu/Tagalog"
+                    href="/menu/tagalog"
                     className="block px-4 py-2 text-sm text-gray-800 font-semibold hover:bg-yellow-600 hover:text-white"
                   >
                     Tagalog
                   </a>
                   <a
-                    href="/Home/Menu/Ilocano"
+                    href="/menu/ilocano"
                     className="block px-4 py-2 text-sm text-gray-800 font-semibold hover:bg-yellow-600 hover:text-white"
                   >
                     Ilocano
                   </a>
                   <a
-                    href="/Home/Menu/Bicolano"
+                    href="/menu/bicolano"
                     className="block px-4 py-2 text-sm text-gray-800 font-semibold hover:bg-yellow-600 hover:text-white"
                   >
                     Bicolano
