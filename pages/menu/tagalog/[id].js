@@ -4,21 +4,21 @@ import HomeHeader from "../../../components/Navbar/HomeHeader";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 
-const MenuItemDetail = () => {
+const TagalogItemDetail = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [menuItem, setMenuItem] = useState(null);
+  const [tagalogItem, setTagalogItem] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchMenuItem = async () => {
+    const fetchTagalogItem = async () => {
       try {
         const response = await fetch(`/api/tagalog?id=${id}`);
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
-        setMenuItem(data);
+        setTagalogItem(data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching menu item:", error);
@@ -27,7 +27,7 @@ const MenuItemDetail = () => {
     };
 
     if (id) {
-      fetchMenuItem();
+      fetchTagalogItem();
     }
   }, [id]);
 
@@ -35,7 +35,7 @@ const MenuItemDetail = () => {
     return <div>Loading...</div>;
   }
 
-  if (!menuItem) {
+  if (!tagalogItem) {
     return <div>Menu item not found</div>;
   }
   const renderStars = (rating) => {
@@ -57,8 +57,8 @@ const MenuItemDetail = () => {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="flex justify-center">
               <img
-                src={menuItem.image}
-                alt={menuItem.name}
+                src={tagalogItem.image}
+                alt={tagalogItem.name}
                 className="w-full h-60 sm:h-auto object-cover rounded-md mb-4"
               />
             </div>
@@ -70,23 +70,23 @@ const MenuItemDetail = () => {
                     className="h-10 w-10 mr-2 cursor-pointer"
                     onClick={() => router.back()}
                   />
-                  <span className="sm:inline-block">{menuItem.name}</span>
+                  <span className="sm:inline-block">{tagalogItem.name}</span>
                 </h1>
                 <div className="flex justify-start items-center">
-                  {renderStars(menuItem.rating)}
+                  {renderStars(tagalogItem.rating)}
                 </div>
               </div>
 
               <div className="flex flex-col justify-center items-center sm:items-start mt-6">
                 <p className="text-gray-700 text-lg mb-2">
                   <span className="text-black">₱</span>
-                  {typeof menuItem.price === "number"
-                    ? menuItem.price.toFixed(2)
-                    : parseFloat(menuItem.price).toFixed(2)}
+                  {typeof tagalogItem.price === "number"
+                    ? tagalogItem.price.toFixed(2)
+                    : parseFloat(tagalogItem.price).toFixed(2)}
                 </p>
                 <div className="prose prose-sm text-black mb-4">
                   <p className="text-sm whitespace-pre-wrap">
-                    {menuItem.description}
+                    {tagalogItem.description}
                   </p>
                 </div>
               </div>
@@ -98,4 +98,4 @@ const MenuItemDetail = () => {
   );
 };
 
-export default MenuItemDetail;
+export default TagalogItemDetail;
